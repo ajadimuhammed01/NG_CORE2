@@ -10,6 +10,7 @@ const routes: Routes = [];
   imports: [RouterModule.forRoot([
     {path: "home", component: HomeComponent},
     {path: "", component: HomeComponent, pathMatch: 'full'},
+    {path: 'products', loadChildren: './products/products.module#ProductsModule'},
     {path: 'Login', component: LoginComponent},
     {path: 'register', component: RegisterComponent},
     {path: '**', redirectTo: '/home'},

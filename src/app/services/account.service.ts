@@ -12,10 +12,12 @@ export class AccountService {
   constructor(private http: HttpClient, private router: Router) { }
   
   //Url to access our Web API
-  private baseUrlLogin: string ="http://localhost:56713/api/account/login";
+  private baseUrlLogin: string ="http://localhost:62900/api/account/login";
+
+  private baseUrlRegister: string ="http://localhost:62900/api/account/register";
   //User related properties
   private loginStatus = new BehaviorSubject<boolean>(this.checkLoginStatus());
-  private UserName = new BehaviorSubject<string>(localStorage.getItem('userName'));
+  private UserName = new BehaviorSubject<string>(localStorage.getItem('username'));
   private UserRole = new BehaviorSubject<string>(localStorage.getItem('userRole'));
     
   //Login Method
@@ -26,6 +28,7 @@ export class AccountService {
         if(result && result.token){
           
           this.loginStatus.next(true);
+          localStorage.setItem('password', result.password)
           localStorage.setItem('loginStatus', '1');
           localStorage.setItem('jwt', result.token);
           localStorage.setItem('username', result.username);
@@ -38,6 +41,19 @@ export class AccountService {
     );
   }
 
+  //Register Method
+  register(username: string, password: string, email: string)
+  {
+    return this.http.post<any>(this.baseUrlRegister, {username, password, email}).pipe(map(result => {
+      //registration was successful
+      return result;
+    }, error =>
+    {
+      return error;
+    }
+    ));
+  }
+
   logout()
   {
     this.loginStatus.next(false);
@@ -46,7 +62,7 @@ export class AccountService {
     localStorage.removeItem('username');
     localStorage.removeItem('expiration');
     localStorage.setItem('loginStatus', '0');
-    this.router.navigate(['/login']);
+    this.router.navigate(['/Login']);
     console.log("Logged Out Successfully");
   }
 
@@ -55,15 +71,15 @@ export class AccountService {
     return false;
   }
 
-  getisLoggedIn()
+  get isLoggedIn()
   {
     return this.loginStatus.asObservable();
   }
-  getcurrentUserName()
+  get currentUserName()
   {
     return this.UserName.asObservable();
-  }2222
-  getcurrentUserRole()
+  }
+  get currentUserRole()
   {
     return this.UserRole.asObservable();
   }
