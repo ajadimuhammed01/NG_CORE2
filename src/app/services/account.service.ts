@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {Observable, BehaviorSubject} from 'rxjs';
+import {Observable, BehaviorSubject, from} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Router} from '@angular/router';
+import jwt_decode from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -68,6 +69,37 @@ export class AccountService {
 
   checkLoginStatus() : boolean
   {
+
+    const token = localStorage.getItem('jwt');
+    const decoded = jwt_decode(token);
+
+    console.log(decoded);
+    var loginCookie = localStorage.getItem("loginStatus");
+
+     if(loginCookie == "1")
+    {
+       if((<any>decoded).exp === undefined)
+      {
+          return false;
+      }
+
+      const date = new Date(0);
+
+      let tokenExpDate = date.setUTCDate((<any>decoded).exp);
+      
+      
+      if(tokenExpDate.valueOf() > new Date().valueOf())
+      {
+        return true;
+      }
+
+
+      console.log("NEW DATE" + new Date().valueOf());
+      console.log("Token Date" + tokenExpDate.valueOf());
+
+      return false; 
+    }  
+
     return false;
   }
 

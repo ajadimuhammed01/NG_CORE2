@@ -4,6 +4,11 @@ import { ProductsRoutingModule } from './products-routing.module';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { ProductListComponent } from './product-list/product-list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {DataTablesModule} from 'angular-datatables';
+import { AuthGuardService } from '../guards/auth-guard.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtInterceptor } from '../_helpers/jwt.interceptor';
+
 
 @NgModule({
   declarations: [
@@ -15,6 +20,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ProductsRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-  ]
+    DataTablesModule
+  ],
+  providers: [
+    AuthGuardService,
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}
+  ],
 })
 export class ProductsModule { }

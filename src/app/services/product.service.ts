@@ -14,11 +14,11 @@ export class ProductService {
 
   constructor(private http: HttpClient) { }
 
-  private baseUrl: string = "/api/product/getproducts";
+  private baseUrl: string = "http://localhost:62900/api/product/getproducts";
 
-  private productUrl: string ="/api/product/addproducts";
+  private productUrl: string ="http://localhost:62900/api/product/addproducts";
 
-  private deleteUrl: string = "/api/product/deleteproduct";
+  private deleteUrl: string = "http://localhost:62900/api/product/deleteproduct";
 
   private updateUrl: string = "/api/product/updateproduct";
 

@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { BsModalRef } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Product } from 'src/app/interfaces/product';
 import { Observable, Subject, from } from 'rxjs';
 import {DataTableDirective} from 'angular-datatables';
+import { ProductService } from 'src/app/services/product.service';
 
 @Component({
   selector: 'app-product-list',
@@ -47,8 +48,14 @@ export class ProductListComponent implements OnInit {
   
   @ViewChild(DataTableDirective, {static:true}) dtElement: DataTableDirective;
   
-
-  constructor() { }
+  constructor(private productService : ProductService,
+             private modalService: BsModalService,
+             private fb: FormBuilder) { }
+  
+  onAddProduct()
+  {
+    this.modalRef = this.modalService.show(this.modal)
+  }
 
   ngOnInit() {
     this.dtOptions = {
@@ -56,7 +63,32 @@ export class ProductListComponent implements OnInit {
       pageLength: 5,
       autoWidth: true,
       order: [[0, 'desc']]
-    }
+    };
+    this.products$ = this.productService.getProducts()
+
+    this.products$.subscribe(result => {this.products = result;
+           this.dtTrigger.next();
+           console.log(this.products);
+    });
+
+    //Modal Message
+    this.modalMessage = "All Fields Are Mandatory";
+
+    let validateImageUrl: string = '^(https?:\/\/.*\.(?:png|jpg))$';
+
+    this.name = new FormControl('', [Validators.required, Validators.maxLength(50)]);
+    this.price = new FormControl('', [Validators.required, Validators.min(0), Validators.max(10000)]);
+    this.description = new FormControl('', [Validators.required, Validators.maxLength(150)]);
+    this.imageUrl = new FormControl('', [Validators.required, Validators.maxLength(50)]);
+
+    this.insertForm = this.fb.group({
+        'price': this.price,
+        'name': this.name,
+        'description': this.description,
+        'imageUrl': this.imageUrl,
+        'outOfStock': true,
+    });
+
   }
 
 }

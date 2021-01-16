@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ViewChildren, TemplateRef } from '@angular/core';
-import { FormBuilder,FormGroup, FormControl, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
+import { Component, OnInit, ViewChild, ViewChildren,  TemplateRef } from '@angular/core';
+import { FormBuilder,FormGroup, FormControl, Validators, AbstractControl, ValidatorFn, ValidationErrors } from '@angular/forms';
 import { AccountService } from '../services/account.service';
 import { Router } from '@angular/router';
 import {BsModalService, BsModalRef} from 'ngx-bootstrap/modal';
@@ -52,13 +52,8 @@ export class RegisterComponent implements OnInit {
       console.log(error)
       this.modalMessage = "Your Registration was Unsuccessful";
       this.modalRef = this.modalService.show(this.modal)
-    }
-    
-    );
+    });
 
-   
-
-    
   }
 
   //Custom Validator

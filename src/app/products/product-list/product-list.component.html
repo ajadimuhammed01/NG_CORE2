@@ -1,39 +1,37 @@
 <div class="container-fluid">
 
-    <button class="btn btn-warning mb-3 float-right text-uppercase" *ngIf="userRoleStatus == 'Admin'" (click)="onAddProduct()"><i class="fa fa-plus"></i> Add Product</button>
-      <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered row-border hover" style="width:100%"> 
-       <table style="width: 100%;">
-      <thead class="text-center thead-dark">
-        <tr>
-          <th>Id</th>
-          <th>Name</th>
-          <th>Description</th>
-          <th>In Stock</th>
-          <th>Price (CAD)</th>
-          <th>Image</th>
-          <th>Actions</th>
-        </tr>
-      </thead> 
-      <tbody>
-         <tr *ngFor="let product of products" class="text-center">
-          <td>{{product.productId}}</td>
-          <td>{{product.name | uppercase}}</td>
-          <td>{{product.description}}</td>
-          <td>{{true == product.outofstock ?  'No ': 'Yes '}}</td>
-          <td>{{product.price | currency: 'CAD':'symbol-narrow':'.2'}}</td>
-          <td><img [src]="product.imageUrl" *ngIf="product.imageUrl" style="float:right" width="75" /></td>
-          <td>
-            <div class="btn-group mt-2" role="group">
-              <button type="button" class="btn btn-success" (click)="onSelect(product)"><i class="fas fa-list"></i></button>
-              <button type="button" class="btn btn-primary" *ngIf="userRoleStatus == 'Admin'" (click)="onUpdateModal(product)"><i class="fas fa-edit"></i></button>
-              <button type="button" class="btn btn-danger" *ngIf="userRoleStatus == 'Admin'" (click)="onDelete(product)"><i class="fas fa-trash-alt"></i></button>
-            </div>
-          </td>
-        </tr> 
-      </tbody>
-      
-    </table>
-  </div>
+  <button class="btn btn-warning mb-3 float-right text-uppercase" (click)="onAddProduct()"><i class="fa fa-plus"></i> Add Product</button>
+  <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered row-border hover" style="width:100%">
+    <thead class="text-center thead-dark">
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>In Stock</th>
+        <th>Price (CAD)</th>
+        <th>Image</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products" class="text-center">
+        <td>{{product.productId}}</td>
+        <td>{{product.name | uppercase}}</td>
+        <td>{{product.description}}</td>
+        <td>{{true == product.outofstock ?  'No ': 'Yes '}}</td>
+        <td>{{product.price | currency: 'CAD':'symbol-narrow':'.2'}}</td>
+        <td><img [src]="product.imageUrl" *ngIf="product.imageUrl" style="float:right" width="75" /></td>
+        <td>
+          <div class="btn-group mt-2" role="group">
+            <button type="button" class="btn btn-success" (click)="onSelect(product)"><i class="fas fa-list"></i></button>
+            <button type="button" class="btn btn-primary" *ngIf="userRoleStatus == 'Admin'" (click)="onUpdateModal(product)"><i class="fas fa-edit"></i></button>
+            <button type="button" class="btn btn-danger" *ngIf="userRoleStatus == 'Admin'" (click)="onDelete(product)"><i class="fas fa-trash-alt"></i></button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
   
   <!-- ADD PRODUCT MODAL START-->
   <ng-template #template>
