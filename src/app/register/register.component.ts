@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ViewChildren,  TemplateRef } from '@angular/core';
-import { FormBuilder,FormGroup, FormControl, Validators, AbstractControl, ValidatorFn, ValidationErrors } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { AccountService } from '../services/account.service';
 import { Router } from '@angular/router';
 import {BsModalService, BsModalRef} from 'ngx-bootstrap/modal';
@@ -84,19 +84,21 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
 
-    this.insertForm = this.fb.group({
-      'username': this.username,
-      'password': this.password,
-      'cpassword': this.cpassword,
-      'email': this.email
-    });
     
-
     this.username = new FormControl('', [Validators.required, Validators.maxLength[10], Validators.minLength[5]]);
     this.password = new FormControl('', [Validators.required, Validators.maxLength[10], Validators.minLength[5]]);
     this.cpassword = new FormControl('', [Validators.required, this.MustWatch(this.password)]);
     this.email = new FormControl('', [Validators.required, Validators.email]);
     this.errorList = [];
+
+    this.insertForm = this.fb.group({
+      "username": this.username,
+      "password": this.password,
+      "cpassword": this.cpassword,  
+      "email": this.email
+    });
+    
+
   
    
   }

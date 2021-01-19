@@ -71,9 +71,10 @@ export class AccountService {
   {
 
     const token = localStorage.getItem('jwt');
-    const decoded = jwt_decode(token);
+   
+   // const decoded = jwt_decode(token);
 
-    console.log(decoded);
+    
     var loginCookie = localStorage.getItem("loginStatus");
 
      if(loginCookie == "1")
@@ -93,7 +94,7 @@ export class AccountService {
         return true;
       }
 
-
+    
       console.log("NEW DATE" + new Date().valueOf());
       console.log("Token Date" + tokenExpDate.valueOf());
 

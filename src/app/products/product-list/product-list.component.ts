@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Product } from 'src/app/interfaces/product';
@@ -50,11 +50,46 @@ export class ProductListComponent implements OnInit {
   
   constructor(private productService : ProductService,
              private modalService: BsModalService,
-             private fb: FormBuilder) { }
+             private fb: FormBuilder,
+             private chRef : ChangeDetectorRef) { }
   
   onAddProduct()
   {
     this.modalRef = this.modalService.show(this.modal)
+  }
+
+  onSubmit()
+  {
+    let newProduct = this.insertForm.value;
+
+    this.productService.insertProduct(newProduct).subscribe(
+      result =>
+      {
+        this.productService.clearCache();
+        this.products$ = this.productService.getProducts();
+
+        this.products$.subscribe(newlist => {
+           this.products = newlist;
+           this.modalRef.hide();
+           this.insertForm.reset();
+           this.rerender();
+        });
+
+        console.log("New Product Added");
+      },
+
+      error => console.log("Could not add Product")
+      
+    )
+  }
+  
+  //We will use this method to destroy old table and re-render new table
+  rerender()
+  {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance.destroy();
+      this.dtTrigger.next();
+    });
   }
 
   ngOnInit() {
@@ -68,6 +103,7 @@ export class ProductListComponent implements OnInit {
 
     this.products$.subscribe(result => {this.products = result;
            this.dtTrigger.next();
+           this.chRef.detectChanges();
            console.log(this.products);
     });
 

@@ -2,6 +2,13 @@
 
 /*Login CSS */
 /*Login Style Sheet*/
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+@import "~@fortawesome/fontawesome-free/css/all.css";
+
+body{
+  font-family: 'Montserrat', sans-serif;
+}
 .login-block {
     background: #DE6262; /* fallback for old browsers */
     background: -webkit-linear-gradient(to bottom, #ff6ec4,#7873f5); /* Chrome 10-25, Safari 5.1-6 */
