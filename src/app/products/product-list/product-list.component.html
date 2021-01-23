@@ -1,5 +1,4 @@
 <div class="container-fluid">
-
   <button class="btn btn-warning mb-3 float-right text-uppercase" (click)="onAddProduct()"><i class="fa fa-plus"></i> Add Product</button>
   <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered row-border hover" style="width:100%">
     <thead class="text-center thead-dark">
@@ -24,7 +23,7 @@
         <td>
           <div class="btn-group mt-2" role="group">
             <button type="button" class="btn btn-success" (click)="onSelect(product)"><i class="fas fa-list"></i></button>
-            <button type="button" class="btn btn-primary" *ngIf="userRoleStatus == 'Admin'" (click)="onUpdateModal(product)"><i class="fas fa-edit"></i></button>
+            <button type="button" class="btn btn-primary" (click)="onUpdateModal(product)"><i class="fas fa-edit"></i></button>
             <button type="button" class="btn btn-danger" *ngIf="userRoleStatus == 'Admin'" (click)="onDelete(product)"><i class="fas fa-trash-alt"></i></button>
           </div>
         </td>

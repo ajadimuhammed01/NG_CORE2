@@ -72,7 +72,7 @@ export class AccountService {
 
     const token = localStorage.getItem('jwt');
    
-   // const decoded = jwt_decode(token);
+    const decoded = jwt_decode(token);
 
     
     var loginCookie = localStorage.getItem("loginStatus");
