@@ -18,9 +18,9 @@ export class ProductService {
 
   private productUrl: string ="http://localhost:62900/api/product/addproducts";
 
-  private deleteUrl: string = "http://localhost:62900/api/product/deleteproduct";
+  private deleteUrl: string = "http://localhost:62900/api/product/deleteproduct/";
 
-  private updateUrl: string = "/api/product/updateproduct";
+  private updateUrl: string = "http://localhost:62900/api/product/updateproduct/";
 
   private product$: Observable<Product[]>;
 
@@ -46,7 +46,7 @@ export class ProductService {
 
   updateProduct(id: number, editProduct: Product) : Observable<Product>
   {
-      return this.http.put<Product>(this.productUrl + id, editProduct);
+      return this.http.put<Product>(this.updateUrl + id, editProduct);
   }
 
   //Delete Product

@@ -5,6 +5,7 @@ import { Product } from 'src/app/interfaces/product';
 import { Observable, Subject, from } from 'rxjs';
 import {DataTableDirective} from 'angular-datatables';
 import { ProductService } from 'src/app/services/product.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
@@ -32,7 +33,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   @ViewChild('template', {static:true}) modal : TemplateRef<any>;
 
   //Update Modal
-  @ViewChild('editemplate', {static:true}) editmodal : TemplateRef<any>;
+  @ViewChild('editTemplate', {static:true}) editmodal : TemplateRef<any>;
 
   //Modal properties
   modalMessage: string;
@@ -51,7 +52,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
   constructor(private productService : ProductService,
              private modalService: BsModalService,
              private fb: FormBuilder,
-             private chRef : ChangeDetectorRef) { }
+             private chRef : ChangeDetectorRef,
+             private router: Router) { }
   
   onAddProduct()
   {
@@ -93,33 +95,71 @@ export class ProductListComponent implements OnInit, OnDestroy {
       this.dtTrigger.next();
     });
   }
-
+  
   //Update existing product
   onUpdate()
   {
-     
+     let editProduct = this.updateForm.value;
+     console.log(editProduct);
+     this.productService.updateProduct(editProduct.id, editProduct).subscribe(
+       result =>
+       {
+          console.log('Product Updated');
+          this.productService.clearCache();
+          this.products$ = this.productService.getProducts();
+          this.products$.subscribe(updatedlist => 
+            {
+               this.products = updatedlist;
+               this.modalRef.hide();
+               this.rerender();
+            });
+       },
+           error => console.log('Could Not Update Product')
+     );
   }
 
   //Load the update Modal
   onUpdateModal(productEdit: Product): void
   {
+    console.log(productEdit);
     this._id.setValue(productEdit.productId);
     this._name.setValue(productEdit.name);
-    this.price.setValue(productEdit.price)
-    this.description.setValue(productEdit.description);
-    this.imageUrl.setValue(productEdit.imageUrl);
+    this._price.setValue(productEdit.price)
+    this._description.setValue(productEdit.description);
+    this._imageUrl.setValue(productEdit.imageUrl);
 
     this.updateForm.setValue({
-       'id': this._id.value,
-       'name': this._name.value,
-       'price': this._price.value,
-       'description': this._description.value,
-       'imageUrl': this._imageUrl.value,
-       'outOfStock': true
+       'id' : this._id.value,
+       'name' : this._name.value,
+       'price' : this._price.value,
+       'description' : this._description.value,
+       'imageUrl' : this._imageUrl.value,
+       'outOfStock' : true
     });
 
     this.modalRef = this.modalService.show(this.editmodal);
   }
+
+  onDelete(product: Product): void
+  {
+      this.productService.deleteProduct(product.productId).subscribe(result =>
+      {
+        this.productService.clearCache();
+        this.products$ = this.productService.getProducts();
+        this.products$.subscribe(newlist =>{
+          this.products = newlist;
+
+          this.rerender();
+        })
+      })
+  }
+
+  onSelect(product: Product): void
+  {
+    this.selectedProduct = product;
+    this.router.navigateByUrl("/products/"+ product.productId);
+  }
+
 
   ngOnInit() {
     this.dtOptions = {
@@ -156,9 +196,11 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
     //Initializing Update Product Properties
     this._name = new FormControl('', [Validators.required, Validators.maxLength(50)]);
-    this._price = new FormControl('', [Validators.required, Validators.min(0), Validators.max(1000)]);
+    this._price = new FormControl('', [Validators.required, Validators.min(0), Validators.max(10000)]);
     this._description = new FormControl('', [Validators.required, Validators.maxLength(150)]);
     this._imageUrl = new FormControl('', [Validators.pattern(validateImageUrl)]);
+    this._id = new FormControl();
+
 
     this.updateForm = this.fb.group({
       'id': this._id,
