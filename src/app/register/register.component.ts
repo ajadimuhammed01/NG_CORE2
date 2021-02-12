@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ViewChildren,  TemplateRef } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
+import {FormBuilder, FormGroup, FormControl, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { AccountService } from '../services/account.service';
 import { Router } from '@angular/router';
 import {BsModalService, BsModalRef} from 'ngx-bootstrap/modal';
@@ -11,10 +11,10 @@ import {BsModalService, BsModalRef} from 'ngx-bootstrap/modal';
 export class RegisterComponent implements OnInit {
 
   constructor(
-        private fb: FormBuilder,
         private acct: AccountService,
         private router: Router,
-        private modalService: BsModalService
+        private fb: FormBuilder,
+        private modalService: BsModalService      
   ) { }
   
   //Properties
@@ -87,20 +87,17 @@ export class RegisterComponent implements OnInit {
     
     this.username = new FormControl('', [Validators.required, Validators.maxLength[10], Validators.minLength[5]]);
     this.password = new FormControl('', [Validators.required, Validators.maxLength[10], Validators.minLength[5]]);
-    this.cpassword = new FormControl('', [Validators.required, this.MustWatch(this.password)]);
+   // this.cpassword = new FormControl('', [Validators.required, this.MustWatch(this.password)]);
     this.email = new FormControl('', [Validators.required, Validators.email]);
     this.errorList = [];
 
     this.insertForm = this.fb.group({
-      "username": this.username,
-      "password": this.password,
-      "cpassword": this.cpassword,  
-      "email": this.email
+      'Username': this.username,
+      'Password': this.password,
+      'cpassword': this.cpassword,  
+      'email': this.email,
     });
-    
-
-  
-   
+         
   }
   
 

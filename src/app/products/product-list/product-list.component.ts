@@ -6,6 +6,7 @@ import { Observable, Subject, from } from 'rxjs';
 import {DataTableDirective} from 'angular-datatables';
 import { ProductService } from 'src/app/services/product.service';
 import { Router } from '@angular/router';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-product-list',
@@ -53,7 +54,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
              private modalService: BsModalService,
              private fb: FormBuilder,
              private chRef : ChangeDetectorRef,
-             private router: Router) { }
+             private router: Router,
+             private acct: AccountService) { }
   
   onAddProduct()
   {
@@ -175,6 +177,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
            this.chRef.detectChanges();
            console.log(this.products);
     });
+    
+    this.acct.currentUserRole.subscribe(result => {this.userRoleStatus = result});
 
     //Modal Message
     this.modalMessage = "All Fields Are Mandatory";

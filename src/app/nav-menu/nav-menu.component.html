@@ -1,5 +1,6 @@
 <header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom mb-3">
+    <!-- <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-bottom mb-3"> -->
+  <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom mb-3">
   
       <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MUHAMMAD AJADI</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -8,7 +9,7 @@
       </button>
       <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
         <ul class="navbar-nav flex-grow-2">
-          <li class="nav-item">
+          <li class="nav-item dropdown">
             <a class="nav-link text-dark" [routerLink]='["/"]'>Home</a>
           </li>
           <li class="nav-item" *ngIf="(LoginStatus$ | async) as LoginStatus">
