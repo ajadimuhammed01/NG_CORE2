@@ -18,9 +18,9 @@ export class RegisterComponent implements OnInit {
   ) { }
   
   //Properties
-  insertForm: FormGroup;
-  username: FormControl;
-  password: FormControl;
+  insertForms: FormGroup;
+  Username: FormControl;
+  Password: FormControl;
   cpassword: FormControl;
   email: FormControl;
   modalRef: BsModalRef;
@@ -35,7 +35,7 @@ export class RegisterComponent implements OnInit {
 
     
 
-    let userDetails = this.insertForm.value;
+    let userDetails = this.insertForms.value;
     console.log(userDetails);
 
     this.acct.register(userDetails.username, userDetails.password, userDetails.email).subscribe(result => {
@@ -85,17 +85,17 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
 
     
-    this.username = new FormControl('', [Validators.required, Validators.maxLength[10], Validators.minLength[5]]);
-    this.password = new FormControl('', [Validators.required, Validators.maxLength[10], Validators.minLength[5]]);
+    this.Username = new FormControl('', [Validators.required, Validators.maxLength[10], Validators.minLength[5]]);
+    this.Password = new FormControl('', [Validators.required, Validators.maxLength[10], Validators.minLength[5]]);
    // this.cpassword = new FormControl('', [Validators.required, this.MustWatch(this.password)]);
     this.email = new FormControl('', [Validators.required, Validators.email]);
     this.errorList = [];
 
-    this.insertForm = this.fb.group({
-      'Username': this.username,
-      'Password': this.password,
+    this.insertForms = this.fb.group({
+      'Username': this.Username,
+      'Password': this.Password,
       'cpassword': this.cpassword,  
-      'email': this.email,
+      'email': this.email
     });
          
   }

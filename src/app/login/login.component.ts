@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../services/account.service';
 import {FormGroup, FormControl, FormBuilder, Validators} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import jwtDecode from 'jwt-decode';
 
 @Component({
   selector: 'app-login',
@@ -28,6 +29,8 @@ export class LoginComponent implements OnInit {
       let userlogin = this.insertForm.value;
       this.acct.login(userlogin.Username, userlogin.Password).subscribe(result => {
            let token = (<any>result).token;
+           var decoded = jwtDecode(token);
+           console.log(decoded);
            console.log(token);
            console.log(result.userRole);
            console.log("User Logged In Successfully");

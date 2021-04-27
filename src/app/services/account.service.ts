@@ -74,29 +74,32 @@ export class AccountService {
    
     const decoded = jwt_decode(token);
 
+  
+
     
     var loginCookie = localStorage.getItem("loginStatus");
 
      if(loginCookie == "1")
     {
-       if((<any>decoded).exp === undefined)
+    
+         if((<any>decoded).exp === undefined)
       {
           return false;
-      }
+      }  
 
       const date = new Date(0);
 
-      let tokenExpDate = date.setUTCDate((<any>decoded).exp);
+      let tokenExpDate = date.setUTCSeconds((<any>decoded).exp);
       
       
-      if(tokenExpDate.valueOf() > new Date().valueOf())
+       if(tokenExpDate.valueOf() > new Date().valueOf())
       {
         return true;
-      }
+      } 
 
     
-      console.log("NEW DATE" + new Date().valueOf());
-      console.log("Token Date" + tokenExpDate.valueOf());
+       console.log("NEW DATE" + new Date().valueOf());
+       console.log("Token Date" + tokenExpDate.valueOf()); 
 
       return false; 
     }  
